@@ -17,11 +17,76 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+class RegisterInputs extends Component {
+  state = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    loginEmail: '',
+    loginPassword: '',
+    changeEmail: '',
+    changePassword: ''
+  }
+  handleFirstName = (text) => {
+    this.setState({firstName:text})
+  }
+  handleLastName = (text) => {
+    this.setState({lastName:text})
+  }
+  handleEmail = (text) => {
+    this.setSate({email:text})
+  }
+  handlePhoneNumber = (text) => {
+    this.setState({phoneNumber:text})
+  }
+  handlePassword = (text) => {
+    this.setState({password:text})
+  }
+  register = (f,l,e,pn,pass) => {
+    fetch('https://localhost:3306/api/users/create', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: f,
+        lastName: l,
+        email: e,
+        phoneNumber: pn,
+        password: pass,
+        }),
+    });
+  }
+  handleLoginEmail = (text) => {
+    this.setState({loginEmail:text})
+  }
+  handleLoginPassword = (text) => {
+    this.setState({loginPassword:text})
+  }
+  login = (e,pass) => {
+    {/*
+    Check database for a match. passport.js??
+    */}
+  }
+  handleChangeEmail = (text) => {
+    this.setState({changeEmail:text})
+  }
+  handleChangePassword = (text) => {
+    this.setState({changePassword:text})
+  }
+  changeThePassword = (e,newPass) => {
+    {/*
+    HTTP PUT request
+    */}
+  }
+}
+
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
-    this.state = { text: 'Placeholder' };
   }
 
   render() {
@@ -44,45 +109,112 @@ export default class App extends Component<Props> {
             <Text>First Name: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
-              onSubmitEditing={(text) => this.setState({text})}
-              value={this.state.text}
+              placeholder={'Enter first name'}
+              onChangeText={this.handleFirstName}
             />
           </View>
           <View style={styles.textBox}>
             <Text>Last Name: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
-              onSubmitEditing={(text) => this.setState({text})}
-              value={this.state.text}
+              placeholder={'Enter last name'}
+              onChangeText={this.handleLastName}
             />
           </View>
           <View style={styles.textBox}>
             <Text>Email Address: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
-              onSubmitEditing={(text) => this.setState({text})}
-              value={this.state.text}
+              autoCapitalize={'none'}
+              keyboardType={'email-address'}
+              placeholder={'Enter email address'}
+              onChangeText={this.handleEmail}
             />
             </View>
           <View style={styles.textBox}>
             <Text>Phone Number: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
-              onSubmitEditing={(text) => this.setState({text})}
-              value={this.state.text}
+              autoCapitalize={'none'}
+              keyboardType={'numeric'}
+              placeholder={'Enter phone number'}
+              onChangeText={this.handlePhoneNumber}
             />
           </View>
           <View style={styles.textBox}>
             <Text>Password: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
-              onSubmitEditing={(text) => this.setState({text})}
-              value={this.state.text}
+              autoCapitalize={'none'}
+              placeholder={'Enter password'}
+              onChangeText={this.handlePassword}
             />
+          </View>
+          <View style={styles.textBox}>
+            <TouchableOpacity
+              onPress = {
+                () => this.register(this.state.firstName,this.state.lastName,this.state.email,this.state.phoneNumber,this.state.password)
+              }>
+              <Text> Submit </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.otherButton}>
-          <Text>Login</Text>
+          <Text style={styles.title}>Login</Text>
+          <View style={styles.textBox}>
+            <Text>Email Address: </Text>
+            <TextInput
+              style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              placeholder={'Enter email address'}
+              onChangeText={this.handleLoginEmail}
+            />
+          </View>
+          <View style={styles.textBox}>
+            <Text>Password: </Text>
+            <TextInput
+              style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              placeholder={'Enter Password'}
+              onChangeText={this.handleLoginPassword}
+            />
+          </View>
+          <View style={styles.textBox}>
+            <TouchableOpacity
+              onPress = {
+                () => this.login(this.state.loginEmail, this.state.loginPassword)
+              }>
+              <Text> Submit </Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.title}>Forgot Password?</Text>
+          <View style={styles.textBox}>
+            <Text>Email Address: </Text>
+            <TextInput
+              style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              placeholder={'Enter email address'}
+              onChangeText={this.handleChangeEmail}
+            />
+          </View>
+          <View style={styles.textBox}>
+            <Text>New Password: </Text>
+            <TextInput
+              style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              placeholder={'Enter Password'}
+              onChangeText={this.handleChangePassword}
+            />
+          </View>
+          <View style={styles.textBox}>
+            <TouchableOpacity
+              onPress = {
+                () => this.changeThePassword(this.state.changeEmail, this.state.changePassword)
+              }>
+              <Text> Submit </Text>
+            </TouchableOpacity>
+          </View>
+          {/* attempt to display current state values.. doesn't work.
+          <View>
+            <Text>{this.state.firstName}{'\n'}{this.state.lastName}{'\n'}{this.state.email}{'\n'}{this.state.phoneNumber}{'\n'}{this.state.password}</Text>
+          </View>
+          */}
         </View>
       </View>
     );
@@ -137,6 +269,7 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingBottom: '3%',
   },
   textBox: {
     flex:1,
