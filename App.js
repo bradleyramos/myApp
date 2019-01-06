@@ -17,7 +17,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-class RegisterInputs extends Component {
+class Inputs extends Component {
   state = {
     firstName: '',
     lastName: '',
@@ -77,9 +77,16 @@ class RegisterInputs extends Component {
     this.setState({changePassword:text})
   }
   changeThePassword = (e,newPass) => {
-    {/*
-    HTTP PUT request
-    */}
+    fetch('https://localhost:3306/api/users/changePassword', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        changeEmail: e,
+        changePassword: newPass,
+        }),
+    });
   }
 }
 
@@ -126,6 +133,7 @@ export default class App extends Component<Props> {
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
               autoCapitalize={'none'}
+              autoCorrect={false}
               keyboardType={'email-address'}
               placeholder={'Enter email address'}
               onChangeText={this.handleEmail}
@@ -146,6 +154,7 @@ export default class App extends Component<Props> {
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
               autoCapitalize={'none'}
+              autoCorrect={false}
               placeholder={'Enter password'}
               onChangeText={this.handlePassword}
             />
@@ -165,6 +174,8 @@ export default class App extends Component<Props> {
             <Text>Email Address: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               placeholder={'Enter email address'}
               onChangeText={this.handleLoginEmail}
             />
@@ -173,6 +184,8 @@ export default class App extends Component<Props> {
             <Text>Password: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               placeholder={'Enter Password'}
               onChangeText={this.handleLoginPassword}
             />
@@ -190,6 +203,8 @@ export default class App extends Component<Props> {
             <Text>Email Address: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               placeholder={'Enter email address'}
               onChangeText={this.handleChangeEmail}
             />
@@ -198,6 +213,8 @@ export default class App extends Component<Props> {
             <Text>New Password: </Text>
             <TextInput
               style={{height: 20, borderColor: 'gray', borderWidth: 1}}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               placeholder={'Enter Password'}
               onChangeText={this.handleChangePassword}
             />
