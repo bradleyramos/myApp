@@ -66,9 +66,16 @@ class Inputs extends Component {
     this.setState({loginPassword:text})
   }
   login = (e,pass) => {
-    {/*
-    Check database for a match. passport.js??
-    */}
+    fetch('https://localhost:3306/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        loginEmail: e,
+        loginPassword: pass,
+        }),
+    });
   }
   handleChangeEmail = (text) => {
     this.setState({changeEmail:text})
